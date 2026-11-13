@@ -1,0 +1,29 @@
+# LoRAX serving the base model plus the trained SQuAD LoRA adapter.
+# Needs an NVIDIA GPU (LoRAX documents Ampere or newer) and the NVIDIA container toolkit.
+#   ADAPTER_DIR=./adapters/squad-lora docker compose -p ragadapt-lorax -f deploy/lorax/docker-compose.yml up
+#   uv run ragadapt eval --backend lorax --endpoint http://127.0.0.1:18080 --adapter /adapters/squad-lora \
+#       --configs base,lora,lora+rag-llamaindex
+services:
+  lorax:
+    image: ghcr.io/predibase/lorax:main
+    command:
+      - --model-id=Qwen/Qwen2.5-0.5B-Instruct
+      - --adapter-source=local
+      - --max-input-length=1536
+      - --max-total-tokens=2048
+      - --max-batch-prefill-tokens=4096
+    ports:
+      - "18080:80"
+    shm_size: 1g
+    volumes:
+      - ${HF_CACHE:-~/.cache/huggingface}:/data
+      - ${ADAPTER_DIR:-../../adapters/squad-lora}:/adapters/squad-lora:ro
+    environment:
+      HUGGINGFACE_HUB_CACHE: /data/hub
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]

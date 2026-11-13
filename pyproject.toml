@@ -1,0 +1,44 @@
+[project]
+name = "rag-adapter-eval-lab"
+version = "0.1.0"
+description = "Shared QA evaluation harness comparing base, RAG (LlamaIndex / LangChain) and LoRA-adapted open models"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.11"
+dependencies = [
+    "numpy>=1.26",
+    "torch>=2.2",
+    "transformers>=4.56",
+    "peft>=0.13",
+    "llama-index-core>=0.12",
+    "langchain-core>=0.3",
+    "langchain-text-splitters>=0.3",
+    "lorax-client>=0.6",
+]
+
+[project.optional-dependencies]
+embeddings = ["sentence-transformers>=3.0"]
+
+[project.scripts]
+ragadapt = "ragadapt.cli:main"
+
+[dependency-groups]
+dev = ["pytest>=8"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/ragadapt"]
+
+[tool.uv.sources]
+torch = { index = "pytorch-cpu" }
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
