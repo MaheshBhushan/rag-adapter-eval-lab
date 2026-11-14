@@ -3,6 +3,9 @@ on:
   push:
     branches: [main]
   pull_request:
+env:
+  # nltk (used by llama-index) refuses to open hardlinked files; uv hardlinks from its cache by default.
+  UV_LINK_MODE: copy
 jobs:
   test:
     runs-on: ubuntu-latest
