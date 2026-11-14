@@ -41,6 +41,7 @@ def sh(cmd: str) -> str:
 subprocess.run([sys.executable, "-m", "pip", "install", "-q",
                 f"rag-adapter-eval-lab @ git+https://github.com/MaheshBhushan/rag-adapter-eval-lab@{REPO_REF}",
                 "sentence-transformers"], check=True)
+subprocess.run([sys.executable, "-m", "pip", "uninstall", "-y", "-q", "torchao"], check=True)
 
 import torch  # noqa: E402
 

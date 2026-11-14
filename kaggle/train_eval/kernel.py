@@ -21,7 +21,11 @@ def run(*cmd: str) -> None:
 
 run(sys.executable, "-m", "pip", "install", "-q",
     f"rag-adapter-eval-lab[embeddings] @ git+https://github.com/MaheshBhushan/rag-adapter-eval-lab@{REPO_REF}")
+# Kaggle's preinstalled torchao is older than recent PEFT accepts; LoRA does not need it.
+run(sys.executable, "-m", "pip", "uninstall", "-y", "-q", "torchao")
 run("nvidia-smi", "--query-gpu=name,memory.total,driver_version", "--format=csv")
+os.makedirs("/tmp/work", exist_ok=True)
+os.chdir("/tmp/work")
 
 import peft  # noqa: E402
 import torch  # noqa: E402
