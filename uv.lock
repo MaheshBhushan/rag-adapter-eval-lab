@@ -2262,7 +2262,7 @@ requires-dist = [
     { name = "peft", specifier = ">=0.13" },
     { name = "sentence-transformers", marker = "extra == 'embeddings'", specifier = ">=3.0" },
     { name = "torch", specifier = ">=2.2", index = "https://download.pytorch.org/whl/cpu" },
-    { name = "transformers", specifier = ">=4.45" },
+    { name = "transformers", specifier = ">=4.56" },
 ]
 provides-extras = ["embeddings"]
 
